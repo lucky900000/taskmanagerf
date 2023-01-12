@@ -5,8 +5,8 @@ const user = require("./models/users.js");
 const task = require("./models/tasks.js");
 const userrouter = require("./routers/userrouter.js");
 const taskrouter = require("./routers/taskrouter.js");
-//const port = process.env.PORT || 3000
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
+//const port = process.env.PORT;
 app.use(express.json());
 app.use(userrouter);
 app.use(taskrouter);
@@ -171,19 +171,19 @@ app.use(express.json());
 //   await nd.save();
 // }
 // cretet().then();
-const main = async function () {
-  //   const t = await task.findById("63bc5500b4895b70bded7972");
-  //   // console.log(t);
+// const main = async function () {
+//   //   const t = await task.findById("63bc5500b4895b70bded7972");
+//   //   // console.log(t);
 
-  //   await t.populate(["creatorid"]);
-  //   console.log(t.creatorid);
-  console.log(100);
-  const o = await user.findById("63bc1fc49a61a99371781602");
-  console.log(o);
+//   //   await t.populate(["creatorid"]);
+//   //   console.log(t.creatorid);
+//   console.log(100);
+//   const o = await user.findById("63bc1fc49a61a99371781602");
+//   console.log(o);
 
-  await o.populate(["mytasks"]);
-  console.log(o.mytasks);
-};
+//   await o.populate(["mytasks"]);
+//   console.log(o.mytasks);
+// };
 
 //main();
 // const upload = multer({ dest: "../avatars" });
@@ -192,24 +192,24 @@ const main = async function () {
 //   console.log("in avatar fn");
 //   res.send();
 // });
-const middle = async function (req, res, next) {
-  console.log("in midd");
-  throw new Error("tytyy");
-  console.log("after thrwoing error");
-  next();
-};
-app.post(
-  "/test",
-  middle,
-  (req, res) => {
-    try {
-      res.send("dn");
-    } catch (e) {
-      res.send(e);
-    }
-  },
-  (error, req, res, next) => {
-    console.log("in vb");
-    res.status(400).send({ error: error.message });
-  }
-);
+// const middle = async function (req, res, next) {
+//   console.log("in midd");
+//   throw new Error("tytyy");
+//   console.log("after thrwoing error");
+//   next();
+// };
+// app.post(
+//   "/test",
+//   middle,
+//   (req, res) => {
+//     try {
+//       res.send("dn");
+//     } catch (e) {
+//       res.send(e);
+//     }
+//   },
+//   (error, req, res, next) => {
+//     console.log("in vb");
+//     res.status(400).send({ error: error.message });
+//   }
+// );

@@ -4,11 +4,11 @@ const jwt = require("jsonwebtoken");
 mongoose.set("strictQuery", false);
 const bcrypt = require("bcrypt");
 const task = require("./tasks.js");
-// mongoose
-//   .connect("mongodb://127.0.0.1:27017/taskmanagerapi2")
-//   .then(() => console.log("Connected!"));
+mongoose
+  .connect("mongodb://127.0.0.1:27017/taskmanagerapi2")
+  .then(() => console.log("Connected!"));
 
-mongoose.connect(process.env.mongodburl).then(() => console.log("Connected!"));
+//mongoose.connect(process.env.mongodburl).then(() => console.log("Connected!"));
 
 mongoose.pluralize(null);
 
@@ -60,41 +60,49 @@ userschema.pre("remove", async function (next) {
 });
 
 userschema.statics.loginvalidation = async function (emailid, password) {
-  console.log(89898);
-  const userwiththisemail = await User.findOne({ email: emailid });
-  console.log(userwiththisemail);
-  if (!userwiththisemail) {
-    console.log("no user with this emailid");
-    throw new Error("Not able to login");
-    return;
-  }
+  try {
+    console.log(89898);
+    const userwiththisemail = await User.findOne({ email: emailid });
+    console.log(userwiththisemail);
+    if (!userwiththisemail) {
+      console.log("no user with this emailid");
+      throw new Error("Not able to login");
+      return;
+    }
 
-  const actualpasswordofthisuser = userwiththisemail.password;
-  console.log(actualpasswordofthisuser);
-  const ifpasswordsmatch = await bcrypt.compare(
-    password,
-    actualpasswordofthisuser
-  );
-  console.log(ifpasswordsmatch);
-  if (!ifpasswordsmatch) {
-    console.log(99);
-    throw new Error("unable to login as passwords do not match");
-    return;
-  }
+    const actualpasswordofthisuser = userwiththisemail.password;
+    console.log(actualpasswordofthisuser);
+    const ifpasswordsmatch = await bcrypt.compare(
+      password,
+      actualpasswordofthisuser
+    );
+    console.log(ifpasswordsmatch);
+    if (!ifpasswordsmatch) {
+      console.log(99);
+      throw new Error("unable to login as passwords do not match");
+      return;
+    }
 
-  return userwiththisemail;
+    return userwiththisemail;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 userschema.methods.showonlyselecteddata = async function () {
-  console.log("welcm to showonlydel");
-  // console.log(this);
-  const duplicateobject = this.toObject();
-  // console.log(duplicateobject);
-  delete duplicateobject.tokens;
-  delete duplicateobject.password;
-  // console.log(duplicateobject);
+  try {
+    console.log("welcm to showonlydel");
+    // console.log(this);
+    const duplicateobject = this.toObject();
+    // console.log(duplicateobject);
+    delete duplicateobject.tokens;
+    delete duplicateobject.password;
+    // console.log(duplicateobject);
 
-  return duplicateobject;
+    return duplicateobject;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 // BELOW IS HOW I TRIED TO DECLARE AUTH FUNCTION WITHOUT USING IT AS MIDDLEWARE AND IT WORKED
@@ -123,14 +131,18 @@ userschema.methods.showonlyselecteddata = async function () {
 //   return tokengen;
 // };
 userschema.methods.generatetokens = async function () {
-  console.log("inside gen fn");
+  try {
+    console.log("inside gen fn");
 
-  const tokengen = jwt.sign({ _id: this.id.toString() }, "im doing node");
-  this.tokens = this.tokens.concat({ token: tokengen });
-  // this.tokens.push({ token: tokengen });
-  await this.save();
+    const tokengen = jwt.sign({ _id: this.id.toString() }, "im doing node");
+    this.tokens = this.tokens.concat({ token: tokengen });
+    // this.tokens.push({ token: tokengen });
+    await this.save();
 
-  return tokengen;
+    return tokengen;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const User = mongoose.model("users", userschema);

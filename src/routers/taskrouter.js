@@ -9,19 +9,20 @@ module.exports = taskrouter;
 
 //CREATE TASK BELOW
 taskrouter.post("/tasks", auth, async (req, res) => {
-  const allowedkeys = ["description", "completed"];
-  const keysyouarecreating = Object.keys(req.body);
-  const isvalidkey = keysyouarecreating.every((key) => {
-    return allowedkeys.includes(key);
-  });
-  console.log(88888888);
-  console.log(isvalidkey);
-  if (!isvalidkey) {
-    return res.status(400).send({
-      error: "One/Some of the keys you are trying to create is/are not valid",
-    });
-  }
   try {
+    const allowedkeys = ["description", "completed"];
+    const keysyouarecreating = Object.keys(req.body);
+    const isvalidkey = keysyouarecreating.every((key) => {
+      return allowedkeys.includes(key);
+    });
+    console.log(88888888);
+    console.log(isvalidkey);
+    if (!isvalidkey) {
+      return res.status(400).send({
+        error: "One/Some of the keys you are trying to create is/are not valid",
+      });
+    }
+
     console.log(9900);
     const taskdocument = await new task({
       ...req.body,
@@ -185,25 +186,25 @@ taskrouter.delete("/tasks/:id", auth, async (req, res) => {
 
 //UPDATE TASK OF A USER AFTER AUTHENTICATING HIM:-
 taskrouter.patch("/tasks/:id", auth, async (req, res) => {
-  const allowedupdates = ["description", "completed"];
-
-  //   Object.keys(req.body).forEach((key) => {
-  //     console.log(key);
-  //     if (!allowedupdates.includes(key)) {
-  //       console.log(2);
-  //       validator = false;
-  //     }
-  //   });
-
-  const validator = Object.keys(req.body).every((key) => {
-    return allowedupdates.includes(key);
-  });
-
-  if (!validator) {
-    return res.status(400).send({ error: "This key cannot be udpated" });
-  }
-
   try {
+    const allowedupdates = ["description", "completed"];
+
+    //   Object.keys(req.body).forEach((key) => {
+    //     console.log(key);
+    //     if (!allowedupdates.includes(key)) {
+    //       console.log(2);
+    //       validator = false;
+    //     }
+    //   });
+
+    const validator = Object.keys(req.body).every((key) => {
+      return allowedupdates.includes(key);
+    });
+
+    if (!validator) {
+      return res.status(400).send({ error: "This key cannot be udpated" });
+    }
+
     const tasktobeupdated = await task.findOne({
       creatorid: req.user._id,
       _id: req.params.id,

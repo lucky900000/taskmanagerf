@@ -15,22 +15,22 @@ const bcrypt = require("bcrypt");
 const task = require("../models/tasks.js");
 //CREATE BELOW
 userrouter.post("/users", async (req, res) => {
-  console.log("in user signup fn");
-  const allowedkeys = ["name", "email", "age", "password", "tokens"];
-  const keysyouarecreating = Object.keys(req.body);
-  const isvalidkey = keysyouarecreating.every((key) => {
-    return allowedkeys.includes(key);
-  });
-  console.log(88888888);
-  console.log(isvalidkey);
-  if (!isvalidkey) {
-    return res.status(400).send({
-      error: "One/Some of the keys you are trying to create is/are not valid",
-    });
-  }
-  console.log(100);
-
   try {
+    console.log("in user signup fn");
+    const allowedkeys = ["name", "email", "age", "password", "tokens"];
+    const keysyouarecreating = Object.keys(req.body);
+    const isvalidkey = keysyouarecreating.every((key) => {
+      return allowedkeys.includes(key);
+    });
+    console.log(88888888);
+    console.log(isvalidkey);
+    if (!isvalidkey) {
+      return res.status(400).send({
+        error: "One/Some of the keys you are trying to create is/are not valid",
+      });
+    }
+    console.log(100);
+
     const userdocument = new user(req.body);
     console.log("dubara");
     //  await userdocument.save();
@@ -53,8 +53,9 @@ userrouter.post("/users", async (req, res) => {
 //READ BELOW
 
 userrouter.get("/users/me", auth, async (req, res) => {
-  console.log("in get function");
   try {
+    console.log("in get function");
+
     console.log(10);
 
     // const result = await user.find();
